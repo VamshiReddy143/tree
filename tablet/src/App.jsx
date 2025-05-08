@@ -1,6 +1,9 @@
+"use client";
+
 import React, { useRef, useState } from 'react';
-import Footer from './components/Footer';
 import VideoModal from './components/VideoModal';
+import FormModal from './components/FormModal';
+import { graphicsConfig } from "./config/graphics";
 
 const App = () => {
   const ballRefs = [useRef(null), useRef(null), useRef(null)];
@@ -18,6 +21,7 @@ const App = () => {
     description: '',
     videoSrc: '',
   });
+  const [formModalOpen, setFormModalOpen] = useState(false);
 
   // Adjustable distances for each ball (in pixels)
   const distances = [
@@ -75,7 +79,7 @@ const App = () => {
 
   const getRegionVideo = (region) => {
     const videos = {
-      'West Coast': 'https://videos.pexels.com/video-files/6548176/6548176-sd_640_360_24fps.mp4', // Ensure these paths match your public folder structure
+      'West Coast': 'https://videos.pexels.com/video-files/6548176/6548176-sd_640_360_24fps.mp4',
       "Ottawa": 'https://videos.pexels.com/video-files/854040/854040-sd_640_360_30fps.mp4',
       'East Coast': 'https://videos.pexels.com/video-files/6950902/6950902-sd_640_360_25fps.mp4',
     };
@@ -83,12 +87,15 @@ const App = () => {
   };
 
   return (
-    <div className="bg overflow-hidden">
+    <div
+      className="bg overflow-hidden"
+      style={{ backgroundImage: `url(${graphicsConfig.mainPageBackground})`, backgroundSize: 'cover' }}
+    >
       <div className="flex items-center pt-3 justify-center text-center">
-        <h1 className="text-center font-semibold text-3xl text-white">Voices Of Canada</h1>
+        <h1 className="text-center pt-4 font-semibold text-3xl text-white">Voices Of Canada</h1>
       </div>
       <div className="flex text-gray-200 gap-[30px] relative items-center justify-center h-screen">
-        <div className="mb-[13em] absolute mr-[38em] text-center">
+        <div className="mb-[30em] absolute mr-[50em] text-center">
           <div
             ref={ballRefs[0]}
             className="bg-green-700 h-[80px] w-[80px] cursor-pointer rounded-full transition-transform duration-200"
@@ -102,7 +109,7 @@ const App = () => {
           <p>West Coast</p>
         </div>
 
-        <div className="mt-[2em] absolute mr-[0em] text-center">
+        <div className="mb-[15em] absolute mr-[0em] text-center">
           <div
             ref={ballRefs[1]}
             className="bg-blue-700 h-[80px] w-[80px] cursor-pointer rounded-full transition-transform duration-200"
@@ -116,7 +123,7 @@ const App = () => {
           <p>Ottawa</p>
         </div>
 
-        <div className="mb-[4em] absolute ml-[25em] text-center">
+        <div className="mb-[20em] absolute ml-[27em] text-center">
           <div
             ref={ballRefs[2]}
             className="bg-green-900 h-[80px] w-[80px] cursor-pointer relative rounded-full transition-transform duration-200"
@@ -130,12 +137,16 @@ const App = () => {
           <p>East Coast</p>
         </div>
 
-        <div className="text-black text-center absolute bottom-30">
+        <div className="text-black text-center absolute  bottom-[500px]">
           <h2 className="font-semibold text-xl">Click On a spokesperson to hear their message</h2>
           <p className="text-[15px] font-italic">Discover perspectives from across Canada</p>
         </div>
+      <div className='text-center text-gray-200 bottom-20 absolute  h-[10em] flex flex-col gap-3 items-center justify-center'>
+        <h1 className='text-3xl font-semibold'>Ready to join conversation</h1>
+        <p className='text-[15px] text-gray-200/90 font-semibold'>Have your voice heard and connect with our spokesperson</p>
+        <button  onClick={() => setFormModalOpen(true)} className='bg-gray-200/18 px-4 py-3 cursor-pointer rounded-full'>Ask Your Question</button>
+    </div>
       </div>
-      <Footer />
 
       <VideoModal
         isOpen={modalState.isOpen}
@@ -143,6 +154,10 @@ const App = () => {
         title={modalState.title}
         description={modalState.description}
         videoSrc={modalState.videoSrc}
+      />
+      <FormModal
+        isOpen={formModalOpen}
+        onClose={() => setFormModalOpen(false)}
       />
     </div>
   );
